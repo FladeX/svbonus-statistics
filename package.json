@@ -1,0 +1,8 @@
+{
+  "name": "svbonus-statistics",
+  "version": "0.0.1",
+  "dependencies": {
+    "request": "^2.72.0",
+    "htmlparser2": "^3.9.0"
+  }
+}
