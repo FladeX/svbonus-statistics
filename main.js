@@ -18,7 +18,8 @@ var insertStat = function(db, data, callback) {
 		{
 			total			: data.total,
 			lastCount	: data.lastPurchaseCount,
-			lastTime	: data.lastPurchaseTime
+			lastTime	: data.lastPurchaseTime,
+			date			: Date.now() / 1000 | 0
 		}
 	], function(err, result) {
 		assert.equal(err, null);
