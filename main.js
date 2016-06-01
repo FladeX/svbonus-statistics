@@ -16,7 +16,9 @@ var insertStat = function(db, data, callback) {
 	// Insert new stats
 	collection.insertMany([
 		{
-			total: data.total
+			total			: data.total,
+			lastCount	: data.lastPurchaseCount,
+			lastTime	: data.lastPurchaseTime
 		}
 	], function(err, result) {
 		assert.equal(err, null);
@@ -53,6 +55,7 @@ MongoClient.connect(url, function(err, db) {
 			var isTotalTextFound = false;
 			var parser = new htmlparser.Parser({
 				onopentag: function(name, attributes) {
+					// Total bonuses
 					if (name === 'div' && attributes.id === 'infa') {
 						isSectionFound = true;
 					}
@@ -67,10 +70,22 @@ MongoClient.connect(url, function(err, db) {
 				},
 				ontext: function(text) {
 					if (isTotalTextFound) {
+						// Total bonuses
 						if (text.match('Доступно: ')) {
 							var total = text.match(/\d+/)[0] || 0;
 							console.log('Доступно: ' + total);
 							statistics.total = total;
+						}
+						// Last purchase
+						if (text.match('Последняя покупка:')) {
+							var lastPurchaseCount = text.match(/\d+/)[0] || 0;
+							console.log('Последняя покупка: ' + lastPurchaseCount);
+							statistics.lastPurchaseCount = lastPurchaseCount;
+						}
+						if (text.match(/в\s+(\d+)\:(\d+)/)) {
+							var lastPurchaseTime = text.match(/\d+/)[0] + text.match(/\:(\d+)/)[0];
+							console.log('Последняя покупка в: ' + lastPurchaseTime);
+							statistics.lastPurchaseTime = lastPurchaseTime;
 							isTotalBlockFound = false;
 							isTotalTextFound = false;
 						}
