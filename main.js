@@ -31,18 +31,6 @@ var insertStat = function(db, data, callback) {
 	});
 };
 
-var findDocuments = function(db, callback) {
-	// Get the document collection
-	var collection = db.collection(config.databaseCollection);
-	// Find some documents
-	collection.find({}).toArray(function(err, data) {
-		assert.equal(err, null);
-		console.log('Found the following records');
-		console.log(data);
-		callback(data);
-	});
-};
-
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, db) {
 	assert.equal(null, err);
@@ -96,9 +84,7 @@ MongoClient.connect(url, function(err, db) {
 			});
 			parser.write(html);
 			insertStat(db, statistics, function() {
-				findDocuments(db, function() {
-					db.close();
-				});
+				db.close();
 			});
 			parser.end();
 		}

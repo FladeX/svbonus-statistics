@@ -22,7 +22,6 @@ var findDocuments = function(db, callback) {
 			previous: 0,
 			time		: 0
 		};
-		console.log('Found the following records');
 		data.forEach(function(element) {
 			if (!period.start) {
 				period.start = element.date;
