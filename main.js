@@ -4,15 +4,16 @@ var request = require('request');
 var htmlparser = require('htmlparser2');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
+var config = require('./config');
 
-var source = 'http://svbon.us/';
+var source = config.source;
 
 // DB Url
-var url = 'mongodb://localhost:27017/svbonus';
+var url = config.databaseUrl;
 
 var insertStat = function(db, data, callback) {
 	// Get the statistics collection
-	var collection = db.collection('statistics');
+	var collection = db.collection(config.databaseCollection);
 	// Insert new stats
 	collection.insertMany([
 		{
@@ -32,7 +33,7 @@ var insertStat = function(db, data, callback) {
 
 var findDocuments = function(db, callback) {
 	// Get the document collection
-	var collection = db.collection('statistics');
+	var collection = db.collection(config.databaseCollection);
 	// Find some documents
 	collection.find({}).toArray(function(err, data) {
 		assert.equal(err, null);

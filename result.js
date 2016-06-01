@@ -2,13 +2,14 @@
 
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
+var config = require('./config');
 
 // DB Url
-var url = 'mongodb://localhost:27017/svbonus';
+var url = config.databaseUrl;
 
 var findDocuments = function(db, callback) {
 	// Get the document collection
-	var collection = db.collection('statistics');
+	var collection = db.collection(config.databaseCollection);
 	// Find some documents
 	collection.find({}).toArray(function(err, data) {
 		assert.equal(err, null);
